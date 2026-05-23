@@ -40,6 +40,16 @@ code{font-family:"JetBrains Mono","Fira Code",monospace;font-size:14px;backgroun
 .tbox{border:1px solid var(--bd);border-radius:8px;overflow:hidden;background:var(--s1)}
 .trow{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-bottom:1px solid var(--bd)}
 .trow:last-child{border-bottom:none}
+.trow.expandable{flex-direction:column;gap:0}
+.trow-hdr{display:flex;align-items:flex-start;gap:12px;width:100%}
+.texp{background:none;border:none;color:var(--mu);cursor:pointer;font-size:11px;padding:2px 2px;border-radius:3px;transition:transform .2s;flex-shrink:0;margin-top:3px;line-height:1}
+.texp:hover{color:var(--ac)}
+.trow[data-open="true"] .texp{transform:rotate(90deg)}
+.trow-body{display:none;padding:10px 0 2px calc(78px + 12px + 18px);font-size:14px;line-height:1.65;color:var(--td)}
+.trow[data-open="true"] .trow-body{display:block}
+.trow-body .tbfield{margin-bottom:8px}
+.trow-body .tblabel{font-size:12px;color:var(--mu);font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-bottom:3px}
+.trow-body .tbfiles{font-family:"JetBrains Mono","Fira Code",monospace;font-size:12px;color:var(--ac);line-height:1.8}
 .tid{font-family:"JetBrains Mono","Fira Code",monospace;font-size:13px;color:var(--mu);white-space:nowrap;padding-top:2px;min-width:78px}
 .ttl{font-size:15px;flex:1}
 .olist{list-style:none;counter-reset:s}
@@ -131,7 +141,7 @@ dialog#cm::backdrop{background:rgba(0,0,0,.72)}
 [data-theme="olde"] dialog#cm{background:var(--s1);border-color:var(--bd)}
 [data-theme="olde"] #copybtn{background:var(--ac);color:#fff}
 /* ── expandable sections ── */
-.xhdr{cursor:pointer;user-select:none;display:flex!important;align-items:center;gap:8px}
+.xhdr{cursor:pointer;user-select:none;display:flex!important;align-items:center;gap:8px;padding:10px 0;margin-bottom:14px}
 .xhdr:hover{color:var(--ac)}
 .xtrig{display:inline-block;flex-shrink:0;font-size:14px;color:var(--ac);opacity:.75;transition:transform .25s ease}
 .xsec[data-open="false"] .xtrig{transform:rotate(-90deg)}
@@ -200,8 +210,24 @@ dialog#cm::backdrop{background:rgba(0,0,0,.72)}
   </div>
 </div>
 
-<div class="sec">
-  <div class="stitle">Project Summary</div>
+<div class="sec xsec" data-open="true" style="outline:2px dashed var(--ac);border-radius:8px">
+  <div class="stitle xhdr" onclick="toggleXSec(this)" style="font-size:13px;letter-spacing:.05em;opacity:.7"><span class="xtrig">&#x25BC;</span> &#x26A0;&#xFE0F; INTERACTION TEST — nested commentable (both parent &amp; child fire on child click)</div>
+  <div class="xbody">
+  <div class="cal cw commentable" data-id="test-parent" data-title="Parent Commentable" style="margin-top:8px">
+    <span class="hint-tip">&#x1F4AC; comment</span>
+    <div class="ct">Parent — click here to comment on parent only</div>
+    <div style="margin-top:10px" class="cal ci commentable" data-id="test-child" data-title="Child Commentable (nested)">
+      <span class="hint-tip">&#x1F4AC; comment</span>
+      <div class="ct">Child (nested) — clicking here opens the child modal, but the parent listener also fires</div>
+      Both modals would fire in sequence without stopPropagation.
+    </div>
+  </div>
+  </div>
+</div>
+
+<div class="sec xsec" data-open="true">
+  <div class="stitle xhdr" onclick="toggleXSec(this)"><span class="xtrig">&#x25BC;</span> Project Summary</div>
+  <div class="xbody">
   <div class="sgrid">
     <div class="sc commentable" data-id="summary-stack" data-title="Stack">
       <span class="hint-tip">&#x1F4AC; comment</span>
@@ -219,10 +245,12 @@ dialog#cm::backdrop{background:rgba(0,0,0,.72)}
       <div><span class="bdg bmd">Medium</span> &#x2014; Replace with your assessment.</div>
     </div>
   </div>
+  </div>
 </div>
 
-<div class="sec">
-  <div class="stitle">1 &#x2014; Problem Statement</div>
+<div class="sec xsec" data-open="true">
+  <div class="stitle xhdr" onclick="toggleXSec(this)"><span class="xtrig">&#x25BC;</span> 1 &#x2014; Problem Statement</div>
+  <div class="xbody">
   <div class="cal cw commentable" data-id="problem-core" data-title="Core Problem">
     <span class="hint-tip">&#x1F4AC; comment</span>
     <div class="ct">What is broken / missing</div>
@@ -238,10 +266,12 @@ dialog#cm::backdrop{background:rgba(0,0,0,.72)}
     <div class="ct">Explicitly out of scope</div>
     List adjacent problems this report does NOT address.
   </div>
+  </div>
 </div>
 
-<div class="sec">
-  <div class="stitle">2 &#x2014; Proposed Design</div>
+<div class="sec xsec" data-open="true">
+  <div class="stitle xhdr" onclick="toggleXSec(this)"><span class="xtrig">&#x25BC;</span> 2 &#x2014; Proposed Design</div>
+  <div class="xbody">
   <div class="cal ci commentable" data-id="design-approach" data-title="Approach">
     <span class="hint-tip">&#x1F4AC; comment</span>
     <div class="ct">APPROACH</div>
@@ -256,6 +286,7 @@ parent_region: null
     <span class="hint-tip">&#x1F4AC; comment</span>
     <div class="ct">Tradeoffs &amp; alternatives considered</div>
     What did you not do, and why?
+  </div>
   </div>
 </div>
 
@@ -280,8 +311,9 @@ parent_region: null
   </div>
 </div>
 
-<div class="sec">
-  <div class="stitle">4 &#x2014; Tickets</div>
+<div class="sec xsec" data-open="true">
+  <div class="stitle xhdr" onclick="toggleXSec(this)"><span class="xtrig">&#x25BC;</span> 4 &#x2014; Tickets</div>
+  <div class="xbody">
   <div class="tbox">
     <div class="trow commentable" data-id="ticket-epic" data-title="EPIC">
       <span class="hint-tip">&#x1F4AC; comment</span>
@@ -289,11 +321,38 @@ parent_region: null
       <div class="ttl"><strong>EPIC</strong>: [Title of the epic]</div>
       <span class="bdg bh">high</span>
     </div>
-    <div class="trow commentable" data-id="ticket-1" data-title="Ticket 1">
+    <div class="trow expandable commentable" data-id="ticket-1" data-title="Ticket 1" data-open="false">
       <span class="hint-tip">&#x1F4AC; comment</span>
-      <div class="tid">T-001</div>
-      <div class="ttl">SCHEMA: Add new fields to the data model</div>
-      <span class="bdg bh">high</span>
+      <div class="trow-hdr">
+        <button class="texp" onclick="toggleTicket(this,event)" title="Expand details">&#x25B6;</button>
+        <div class="tid">T-001</div>
+        <div class="ttl">SCHEMA: Add new fields to the data model</div>
+        <span class="bdg bh">high</span>
+      </div>
+      <div class="trow-body">
+        <div class="tbfield">
+          <div class="tblabel">Description</div>
+          Extend the <code>entity_regions</code> table with four new columns required by the municipality classification system: <code>municipality_id</code> (UUID, nullable FK), <code>district_code</code> (VARCHAR 12), <code>classification</code> (ENUM: urban / suburban / rural), and <code>parent_region_id</code> (self-referencing nullable FK). Add appropriate indexes on <code>municipality_id</code> and <code>classification</code> for query performance.
+        </div>
+        <div class="tbfield">
+          <div class="tblabel">Acceptance Criteria</div>
+          <ul style="margin:0;padding-left:18px">
+            <li>Migration runs cleanly on a production-sized dataset (&gt;2M rows) under 60 s with no table lock</li>
+            <li>Enum constraint enforced at the DB layer; model validation mirrors it</li>
+            <li><code>parent_region_id</code> FK has ON DELETE SET NULL — orphaned children must not cascade-delete</li>
+            <li>All existing specs pass; new unit tests cover enum boundary and self-referencing FK</li>
+          </ul>
+        </div>
+        <div class="tbfield">
+          <div class="tblabel">Files Affected</div>
+          <div class="tbfiles">db/schema.rb<br>db/migrate/20260524_add_municipality_fields.rb<br>app/models/entity_region.rb<br>spec/models/entity_region_spec.rb</div>
+        </div>
+        <div class="tbfield" style="display:flex;gap:24px">
+          <div><div class="tblabel">Estimate</div>3 points</div>
+          <div><div class="tblabel">Blocks</div>T-002, T-003</div>
+          <div><div class="tblabel">Blocked by</div>none</div>
+        </div>
+      </div>
     </div>
     <div class="trow commentable" data-id="ticket-2" data-title="Ticket 2">
       <span class="hint-tip">&#x1F4AC; comment</span>
@@ -323,6 +382,7 @@ parent_region: null
       <li class="commentable" data-id="order-3" data-title="Step 3"><span class="hint-tip">&#x1F4AC; comment</span>API &#x2014; server-side validation before UI touches it</li>
       <li class="commentable" data-id="order-4" data-title="Step 4"><span class="hint-tip">&#x1F4AC; comment</span>UI &#x2014; last; depends on API returning the correct shape</li>
     </ol>
+  </div>
   </div>
 </div>
 
@@ -432,6 +492,12 @@ function toggleXSec(hdr){
   const sec=hdr.closest('.xsec');
   const isOpen=sec.dataset.open!=='false';
   sec.dataset.open=isOpen?'false':'true';
+}
+function toggleTicket(btn,e){
+  e.stopPropagation();
+  const row=btn.closest('.trow');
+  const isOpen=row.dataset.open==='true';
+  row.dataset.open=isOpen?'false':'true';
 }
 function bigCopy(){
   const lines=[];
