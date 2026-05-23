@@ -23,7 +23,7 @@ A single self-contained .html file with:
 
 ## Usage
 
-1. Run the agent skill: skill/skill.md
+1. Run the agent skill: skill/SKILL.md
 2. Answer the interview (project name, branch, sections)
 3. Open the generated HTML in a browser
 
@@ -32,10 +32,13 @@ Or: copy example/tps-report.html, gut the content sections, fill in your own.
 ## File layout
 
     tps-report/
+      .claude-plugin/
+        plugin.json       -- Claude Code plugin manifest
+        marketplace.json  -- marketplace listing
       example/
         tps-report.html   -- working demo with placeholder content
       skill/
-        skill.md          -- agent skill: interview -> generate report HTML
+        SKILL.md          -- agent skill: interview -> generate report HTML
       README.md
 
 ## Profile
