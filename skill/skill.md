@@ -74,7 +74,50 @@ Any `.sec` can be made collapsible by adding the `xsec` class, a `data-open` att
 - The `&#x25BC;` triangle rotates 90° when collapsed (CSS handles it)
 - Big Copy captures content regardless of collapsed state
 
-Use expandable sections for secondary or verbose content (e.g. Considerations, Open Questions). Primary sections (Problem, Design, Tickets) should stay always-visible.
+---
+
+## Expandable rows (inline detail, with comment preserved)
+
+A `.trow.commentable` can have an expand arrow that reveals verbose detail **without** triggering the comment modal. The two interactions coexist because the arrow calls `e.stopPropagation()`, which stops the click from bubbling up to the `.commentable` listener.
+
+```html
+<div class="trow expandable commentable" data-id="ticket-1" data-title="Ticket 1" data-open="false">
+  <span class="hint-tip">&#x1F4AC; comment</span>
+  <div class="trow-hdr">
+    <button class="texp" onclick="toggleTicket(this,event)" title="Expand details">&#x25B6;</button>
+    <div class="tid">T-001</div>
+    <div class="ttl">Ticket title</div>
+    <span class="bdg bh">high</span>
+  </div>
+  <div class="trow-body">
+    <!-- verbose detail: description, acceptance criteria, files, estimate, etc. -->
+  </div>
+</div>
+```
+
+**How the two clicks stay separate:**
+
+| Target clicked | Fires |
+|---|---|
+| `button.texp` | `toggleTicket` → `e.stopPropagation()` — row expands, modal stays closed |
+| Anywhere else on `.trow` | `.commentable` listener → comment modal opens, expand state unchanged |
+
+**JS:**
+```js
+function toggleTicket(btn, e) {
+  e.stopPropagation();                          // prevents .commentable from firing
+  const row = btn.closest('.trow');
+  row.dataset.open = row.dataset.open === 'true' ? 'false' : 'true';
+}
+```
+
+**Key CSS classes:**
+- `.trow.expandable` — switches the row to `flex-direction:column`
+- `.trow-hdr` — the always-visible top line (arrow + ID + title + badge)
+- `.trow-body` — hidden by default; `display:block` when `[data-open="true"]`
+- `.texp` — the arrow button; rotates 90° via CSS when `[data-open="true"]`
+
+**Rule:** Never put a `.commentable` inside another `.commentable`. The expand arrow pattern is the correct solution when you need a nested action — it stays outside the comment system entirely and blocks propagation explicitly.
 
 ---
 
