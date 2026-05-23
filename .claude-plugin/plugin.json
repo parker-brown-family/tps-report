@@ -1,0 +1,11 @@
+{
+  "name": "tps-report",
+  "description": "Generate a self-contained HTML planning report with 4 themes (Dark, Hacker CRT, Olde Tyme, Chalk Flower), inline comments, expandable sections, and a Big Copy button. Zero dependencies — open in any browser.",
+  "version": "1.0.0",
+  "author": {
+    "name": "parker-brown-family"
+  },
+  "license": "MIT",
+  "keywords": ["planning", "html", "report", "design-doc", "workflow"],
+  "skills": ["./skill"]
+}

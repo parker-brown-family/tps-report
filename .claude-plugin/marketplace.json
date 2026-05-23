@@ -1,0 +1,24 @@
+{
+  "name": "tps-report",
+  "id": "tps-report",
+  "owner": {
+    "name": "parker-brown-family"
+  },
+  "metadata": {
+    "description": "Interview-driven HTML planning reports. One conversation, one self-contained .html file. Four themes, inline comment system, Big Copy export. Zero dependencies.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "tps-report",
+      "source": "./",
+      "description": "Generate a self-contained HTML planning report: Dark, Hacker CRT, Olde Tyme, Chalk Flower themes. Inline comments persist in localStorage. Expandable sections. Big Copy exports the full plan + annotations as plain text.",
+      "version": "1.0.0",
+      "author": {
+        "name": "parker-brown-family"
+      },
+      "keywords": ["planning", "html", "report", "design-doc", "workflow"],
+      "category": "workflow"
+    }
+  ]
+}
