@@ -1,6 +1,6 @@
 # Skill: Generate TPS Report
 
-**Purpose:** Produce a single self-contained HTML planning report with three themes (Dark, Hacker CRT, Olde Tyme), an inline comment system, and a Big Copy button.
+**Purpose:** Produce a single self-contained HTML planning report with four themes (Dark, Hacker CRT, Olde Tyme, Chalk Flower), expandable sections, an inline comment system, and a Big Copy button.
 
 ---
 
@@ -47,10 +47,59 @@ Use `example/tps-report.html` as the structural and CSS template.
 - Open Questions section → answer 10
 
 **Do NOT modify:**
-- Any CSS (all three themes, CRT effects, Pip-Boy copy button)
+- Any CSS (all four themes, CRT effects, Pip-Boy copy button, chalk SVG filter)
 - The comment system JavaScript
 - The Big Copy logic
 - The theme toggle buttons
+
+---
+
+## Expandable sections
+
+Any `.sec` can be made collapsible by adding the `xsec` class, a `data-open` attribute, and wrapping the body content in `.xbody`:
+
+```html
+<div class="sec xsec" data-open="true">
+  <div class="stitle xhdr" onclick="toggleXSec(this)">
+    <span class="xtrig">&#x25BC;</span> Section Title
+  </div>
+  <div class="xbody">
+    <!-- section content here -->
+  </div>
+</div>
+```
+
+- `data-open="true"` — starts expanded (default)
+- `data-open="false"` — starts collapsed
+- The `&#x25BC;` triangle rotates 90° when collapsed (CSS handles it)
+- Big Copy captures content regardless of collapsed state
+
+Use expandable sections for secondary or verbose content (e.g. Considerations, Open Questions). Primary sections (Problem, Design, Tickets) should stay always-visible.
+
+---
+
+## Chalk Flower theme
+
+The 🌸 button activates the **chalk** theme. Key characteristics:
+- **Font**: Caveat (handwritten, from Google Fonts — already imported)
+- **Palette**: warm cream background, pastel callout fills (yellow, lavender, mint), rose-pink accent
+- **Chalk stroke effect**: inline SVG `<filter id="chalk-rough">` using `feTurbulence` + `feDisplacementMap` — applied via CSS `filter: url(#chalk-rough)` on cards and callouts
+- **Copy button**: soft gradient rose-pink, rounded pill, Caveat font
+
+The SVG filter element must be present in the `<body>` (before `.page`) for the chalk filter to work:
+
+```html
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0"
+     style="position:absolute;overflow:hidden" aria-hidden="true">
+  <defs>
+    <filter id="chalk-rough" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" seed="5" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="1"
+        xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
+```
 
 **Storage key:** Change `tps-report-v1` to `<project-slug>-v1` so comments don't bleed across reports.
 
@@ -69,6 +118,7 @@ Use `example/tps-report.html` as the structural and CSS template.
 ## Rules
 
 - One file, no dependencies, no build step — all CSS and JS inline.
-- Never strip the CRT/theme code. It is the whole point.
+- Never strip the CRT/theme code or the chalk SVG filter. They are the whole point.
 - The localStorage key must be unique per report to prevent comment bleed.
 - Comments are browser-local. Remind the operator if they ask about sharing with others.
+- Expandable sections: Big Copy always captures collapsed content. Do not rely on visual state.
