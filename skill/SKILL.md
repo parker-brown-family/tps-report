@@ -259,6 +259,8 @@ dialog#cm::backdrop{background:rgba(0,0,0,.72)}
 .cdel{background:none;border:none;color:var(--mu);cursor:pointer;font-size:15px;line-height:1}
 .cdel:hover{color:var(--rd)}
 .ctext{font-size:15px;white-space:pre-wrap}
+.mctx{padding:10px 24px 12px;font-size:13px;color:var(--td);background:var(--s2);border-bottom:1px solid var(--bd);line-height:1.5;max-height:110px;overflow-y:auto}
+.mctx:empty{display:none}
 .minput{padding:14px 24px 20px;border-top:1px solid var(--bd)}
 #newcomment{width:100%;background:var(--s2);border:1px solid var(--bd);border-radius:6px;color:var(--tx);font:15px "Inter","Segoe UI",sans-serif;padding:10px 12px;resize:vertical;min-height:80px;outline:none}
 #newcomment:focus{border-color:var(--ac)}
@@ -271,11 +273,31 @@ dialog#cm::backdrop{background:rgba(0,0,0,.72)}
 #copybtn{background:var(--gr);color:#0f1117;padding:9px 24px;border-radius:6px;font-size:15px;font-weight:700;cursor:pointer;border:none}
 #copybtn:hover{opacity:.9}
 [data-theme="hacker"] .copybar{background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='90'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch' seed='9'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .35 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"),repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0px,rgba(0,0,0,.18) 1px,transparent 1px,transparent 3px),repeating-linear-gradient(90deg,rgba(0,0,0,.12) 0px,rgba(0,0,0,.12) 1px,transparent 1px,transparent 3px),linear-gradient(175deg,#3e3c2a 0%,#2c2b1d 45%,#1c1b12 100%);border-top:4px solid #0a0a06;box-shadow:inset 0 1px 0 rgba(255,200,80,.07),0 -8px 28px rgba(0,0,0,.98);padding:10px 36px;z-index:9999;animation:none!important;filter:none!important}
-[data-theme="hacker"] .copybar p{font-family:"Share Tech Mono","Courier New",monospace!important;font-size:11px!important;font-weight:700!important;color:#120e00!important;text-shadow:none!important;letter-spacing:.16em;text-transform:uppercase;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='64'><defs><linearGradient id='d' x1='0' y1='0' x2='280' y2='64' gradientUnits='userSpaceOnUse'><stop offset='0' stop-color='white' stop-opacity='0.15'/><stop offset='1' stop-color='white' stop-opacity='0.5'/></linearGradient><mask id='m'><rect width='100%25' height='100%25' fill='url(%23d)'/></mask><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.035' numOctaves='4' seed='12' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.5 -.2'/></filter></defs><rect width='100%25' height='100%25' filter='url(%23g)' mask='url(%23m)'/></svg>"),url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='32'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.15' numOctaves='2' seed='7' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .5 0'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>"),linear-gradient(135deg,#b89018 0%,#8a6c14 40%,#6a520e 65%,#44360a 100%);background-blend-mode:multiply,multiply,normal;background-size:100% 100%,50% 50%,100% 100%;padding:8px 18px 7px;border:2px solid #1e1600;box-shadow:inset 0 1px 0 rgba(240,200,60,.15),inset 0 -2px 0 rgba(0,0,0,.7),inset 2px 0 0 rgba(0,0,0,.4),inset -1px 0 0 rgba(0,0,0,.3),0 2px 6px rgba(0,0,0,.75);transform:rotate(-.5deg);max-width:62%;filter:saturate(.7) contrast(1.08)}
-[data-theme="hacker"] #copybtn{position:relative;width:64px;height:64px;border-radius:50%;padding:0;border:none;font-size:0!important;cursor:pointer;filter:none!important;text-shadow:none!important;transform:none!important;animation:pip-pulse 2.4s ease-in-out infinite!important;background:radial-gradient(circle at 38% 32%,#ffe566 0%,#e89a00 38%,#b05800 65%,#4a2000 86%,#180a00 100%);box-shadow:0 0 0 4px #1c1a0c,0 0 0 7px #2e2b18,0 0 0 9px #0b0a06,0 0 22px rgba(240,148,0,.82),0 0 44px rgba(200,100,0,.4),inset 0 3px 7px rgba(255,238,120,.48),inset 0 -3px 6px rgba(0,0,0,.88)}
-[data-theme="hacker"] #copybtn::before{content:"COPY";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:"Share Tech Mono","Courier New",monospace;font-size:12px;font-weight:900;color:#1a0d00;letter-spacing:.12em;text-shadow:none}
-[data-theme="hacker"] #copybtn:hover{animation:none!important;box-shadow:0 0 0 4px #1c1a0c,0 0 0 7px #2e2b18,0 0 0 9px #0b0a06,0 0 30px rgba(255,168,0,.98),0 0 60px rgba(220,120,0,.65),inset 0 2px 5px rgba(255,250,140,.55),inset 0 -3px 6px rgba(0,0,0,.75)!important;filter:none!important;transform:scale(1.06)!important}
-@keyframes pip-pulse{0%,100%{box-shadow:0 0 0 4px #1c1a0c,0 0 0 7px #2e2b18,0 0 0 9px #0b0a06,0 0 22px rgba(240,148,0,.82),0 0 44px rgba(200,100,0,.4),inset 0 3px 7px rgba(255,238,120,.48),inset 0 -3px 6px rgba(0,0,0,.88)}50%{box-shadow:0 0 0 4px #1c1a0c,0 0 0 7px #2e2b18,0 0 0 9px #0b0a06,0 0 32px rgba(255,165,0,.98),0 0 62px rgba(220,110,0,.58),inset 0 3px 7px rgba(255,238,120,.48),inset 0 -3px 6px rgba(0,0,0,.88)}}
+[data-theme="hacker"] .copybar p{font-family:"Share Tech Mono","Courier New",monospace!important;font-size:11px!important;font-weight:700!important;color:#00ff9c!important;text-shadow:0 0 6px rgba(0,255,156,.6),0 0 14px rgba(0,255,156,.25)!important;letter-spacing:.16em;text-transform:uppercase;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='64'><defs><linearGradient id='d' x1='0' y1='0' x2='280' y2='64' gradientUnits='userSpaceOnUse'><stop offset='0' stop-color='white' stop-opacity='0.15'/><stop offset='1' stop-color='white' stop-opacity='0.5'/></linearGradient><mask id='m'><rect width='100%25' height='100%25' fill='url(%23d)'/></mask><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.035' numOctaves='4' seed='12' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.5 -.2'/></filter></defs><rect width='100%25' height='100%25' filter='url(%23g)' mask='url(%23m)'/></svg>"),url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='32'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.15' numOctaves='2' seed='7' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .5 0'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>"),linear-gradient(135deg,#b89018 0%,#8a6c14 40%,#6a520e 65%,#44360a 100%);background-blend-mode:multiply,multiply,normal;background-size:100% 100%,50% 50%,100% 100%;padding:8px 18px 7px;border:2px solid #1e1600;box-shadow:inset 0 1px 0 rgba(240,200,60,.15),inset 0 -2px 0 rgba(0,0,0,.7),inset 2px 0 0 rgba(0,0,0,.4),inset -1px 0 0 rgba(0,0,0,.3),0 2px 6px rgba(0,0,0,.75);transform:rotate(-.5deg);max-width:62%;filter:saturate(.7) contrast(1.08)}
+[data-theme="hacker"] #copybtn{position:relative;width:64px;height:64px;border-radius:50%;padding:0;border:2px solid #1e1600;font-size:0!important;cursor:pointer;filter:saturate(.7) contrast(1.08)!important;text-shadow:none!important;transform:none!important;animation:pip-pulse 2.4s ease-in-out infinite!important;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><defs><linearGradient id='d' x1='0' y1='0' x2='120' y2='120' gradientUnits='userSpaceOnUse'><stop offset='0' stop-color='white' stop-opacity='0.12'/><stop offset='1' stop-color='white' stop-opacity='0.35'/></linearGradient><mask id='m'><rect width='100%25' height='100%25' fill='url(%23d)'/></mask><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='4' seed='17' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.1 -.15'/></filter></defs><rect width='100%25' height='100%25' filter='url(%23g)' mask='url(%23m)'/></svg>"),url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.15' numOctaves='2' seed='7' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .30 0'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>"),linear-gradient(135deg,#b89018 0%,#8a6c14 40%,#6a520e 65%,#44360a 100%);background-blend-mode:multiply,multiply,normal;background-size:100% 100%,40% 40%,100% 100%;box-shadow:0 0 0 4px #0d0d0a,0 0 0 7px #0e1a0e,0 0 0 9px #0b0a06,0 0 22px rgba(0,255,156,.35),0 0 44px rgba(0,200,100,.15),inset 0 -3px 6px rgba(0,0,0,.88)}
+[data-theme="hacker"] #copybtn::before{content:"COPY";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:"Share Tech Mono","Courier New",monospace;font-size:12px;font-weight:900;color:#00ff9c;letter-spacing:.12em;text-shadow:0 0 6px rgba(0,255,156,.9),0 0 16px rgba(0,255,156,.5)}
+[data-theme="hacker"] #copybtn:hover{animation:none!important;box-shadow:0 0 0 4px #0d0d0a,0 0 0 7px #0e1a0e,0 0 0 9px #0b0a06,0 0 30px rgba(0,255,156,.6),0 0 60px rgba(0,200,100,.35),inset 0 -3px 6px rgba(0,0,0,.75)!important;filter:saturate(.7) contrast(1.08)!important;transform:scale(1.06)!important}
+@keyframes pip-pulse{0%,100%{box-shadow:0 0 0 4px #0d0d0a,0 0 0 7px #0e1a0e,0 0 0 9px #0b0a06,0 0 22px rgba(0,255,156,.35),0 0 44px rgba(0,200,100,.15),inset 0 -3px 6px rgba(0,0,0,.88)}50%{box-shadow:0 0 0 4px #0d0d0a,0 0 0 7px #0e1a0e,0 0 0 9px #0b0a06,0 0 32px rgba(0,255,156,.65),0 0 62px rgba(0,200,100,.38),inset 0 -3px 6px rgba(0,0,0,.88)}}
+[data-theme="hacker"] dialog#cm{background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='540' height='500'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.02' numOctaves='3' seed='23' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.7 -.08'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>"),linear-gradient(160deg,#0d180d 0%,#081008 50%,#040b04 100%);background-blend-mode:multiply,normal;border:1px solid rgba(0,255,156,.25);box-shadow:0 0 0 1px #0b1a0b,0 0 40px rgba(0,255,156,.1),0 20px 60px rgba(0,0,0,.95)}
+[data-theme="hacker"] .mh{border-bottom:1px solid rgba(0,255,156,.2)}
+[data-theme="hacker"] .mh h3{font-family:"Share Tech Mono","Courier New",monospace;color:#00ff9c;text-shadow:0 0 8px rgba(0,255,156,.5),0 0 20px rgba(0,255,156,.2);letter-spacing:.06em}
+[data-theme="hacker"] .mclose{color:rgba(0,255,156,.4)}
+[data-theme="hacker"] .mclose:hover{color:#00ff9c;text-shadow:0 0 8px rgba(0,255,156,.6)}
+[data-theme="hacker"] .mctx{background:rgba(0,255,156,.04);border-bottom:1px solid rgba(0,255,156,.15);color:rgba(0,255,156,.65);font-family:"Share Tech Mono","Courier New",monospace;font-size:12px}
+[data-theme="hacker"] .nocom{color:#00ff9c;font-family:"Share Tech Mono","Courier New",monospace;font-size:13px}
+[data-theme="hacker"] .citem{background:rgba(0,255,156,.05);border:1px solid rgba(0,255,156,.14)}
+[data-theme="hacker"] .ctext{color:rgba(0,255,156,.82);font-family:"Share Tech Mono","Courier New",monospace;font-size:13px}
+[data-theme="hacker"] .cmeta{color:rgba(0,255,156,.38)}
+[data-theme="hacker"] #newcomment{background:rgba(0,0,0,.5);border:1px solid rgba(0,255,156,.22);color:rgba(0,255,156,.88);font-family:"Share Tech Mono","Courier New",monospace}
+[data-theme="hacker"] #newcomment:focus{border-color:rgba(0,255,156,.55);box-shadow:0 0 0 2px rgba(0,255,156,.12)}
+[data-theme="hacker"] #newcomment::placeholder{color:rgba(0,255,156,.28)}
+[data-theme="hacker"] .mbtns{gap:20px}
+[data-theme="hacker"] .btn.bsec{position:relative;width:52px;height:52px;border-radius:50%;padding:0;border:2px solid #181816;font-size:0!important;cursor:pointer;background:radial-gradient(circle at 40% 35%,#383836 0%,#222220 40%,#161614 70%,#0a0a08 100%);box-shadow:0 0 0 3px #0d0d0a,0 0 0 5px #1a1a18,0 0 0 7px #0b0a06,inset 0 -2px 5px rgba(0,0,0,.9)}
+[data-theme="hacker"] .btn.bsec::before{content:"DONE";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:"Share Tech Mono","Courier New",monospace;font-size:9px;font-weight:900;color:#484846;letter-spacing:.1em}
+[data-theme="hacker"] .btn.bsec:hover{transform:scale(1.05);box-shadow:0 0 0 3px #0d0d0a,0 0 0 5px #1a1a18,0 0 0 7px #0b0a06,inset 0 -2px 5px rgba(0,0,0,.8)}
+[data-theme="hacker"] .btn.bpri{position:relative;width:52px;height:52px;border-radius:50%;padding:0;border:2px solid #1e1600;font-size:0!important;cursor:pointer;filter:saturate(.7) contrast(1.08)!important;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='104' height='104'><defs><linearGradient id='d' x1='0' y1='0' x2='104' y2='104' gradientUnits='userSpaceOnUse'><stop offset='0' stop-color='white' stop-opacity='0.12'/><stop offset='1' stop-color='white' stop-opacity='0.35'/></linearGradient><mask id='m'><rect width='100%25' height='100%25' fill='url(%23d)'/></mask><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='4' seed='19' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.1 -.15'/></filter></defs><rect width='100%25' height='100%25' filter='url(%23g)' mask='url(%23m)'/></svg>"),url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='52' height='52'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.15' numOctaves='2' seed='7' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .30 0'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>"),linear-gradient(135deg,#b89018 0%,#8a6c14 40%,#6a520e 65%,#44360a 100%);background-blend-mode:multiply,multiply,normal;background-size:100% 100%,40% 40%,100% 100%;box-shadow:0 0 0 3px #0d0d0a,0 0 0 5px #0e1a0e,0 0 0 7px #0b0a06,0 0 16px rgba(0,255,156,.3),inset 0 -2px 5px rgba(0,0,0,.88)}
+[data-theme="hacker"] .btn.bpri::before{content:"ADD";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:"Share Tech Mono","Courier New",monospace;font-size:9px;font-weight:900;color:#00ff9c;letter-spacing:.1em;text-shadow:0 0 6px rgba(0,255,156,.9),0 0 16px rgba(0,255,156,.5)}
+[data-theme="hacker"] .btn.bpri:hover{animation:none!important;box-shadow:0 0 0 3px #0d0d0a,0 0 0 5px #0e1a0e,0 0 0 7px #0b0a06,0 0 24px rgba(0,255,156,.55),inset 0 -2px 5px rgba(0,0,0,.75)!important;filter:saturate(.7) contrast(1.08)!important;transform:scale(1.06)!important}
 @media(max-width:640px){.sgrid{grid-template-columns:1fr 1fr}}
 .commentable.has-comment{outline:2px solid var(--rev-bd)!important;background:var(--rev-bg)!important;border-radius:6px;box-shadow:0 0 12px var(--rev-glow),inset 0 0 18px rgba(0,0,0,.12)}
 .cmtablerow.has-comment td{background:var(--rev-bg)!important;box-shadow:inset 3px 0 0 var(--rev-bd)}
@@ -358,6 +380,12 @@ dialog#cm::backdrop{background:rgba(0,0,0,.72)}
 [data-theme="chalk"] #copybtn:hover{opacity:.9;transform:scale(1.04)}
 [data-theme="chalk"] .branch{font-family:'Caveat',cursive;font-size:17px}
 [data-theme="chalk"] .xtrig{color:var(--ac)}
+#copy-toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.88);opacity:0;pointer-events:none;z-index:10000;transition:opacity .18s,transform .18s;border-radius:8px;padding:20px 36px;font-size:18px;font-weight:700;text-align:center;white-space:nowrap;cursor:pointer}
+#copy-toast.ct-show{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto}
+:root #copy-toast,[data-theme="dark"] #copy-toast{background:var(--s1);border:2px solid var(--ac);color:var(--tx);box-shadow:0 8px 32px rgba(0,0,0,.55),0 0 18px var(--rev-glow)}
+[data-theme="hacker"] #copy-toast{font-family:"Share Tech Mono","Courier New",monospace;font-size:16px;letter-spacing:.15em;color:#00ff9c;text-shadow:0 0 8px rgba(0,255,156,.65),0 0 20px rgba(0,255,156,.3);background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='360' height='80'><defs><linearGradient id='d' x1='0' y1='0' x2='360' y2='80' gradientUnits='userSpaceOnUse'><stop offset='0' stop-color='white' stop-opacity='0.12'/><stop offset='1' stop-color='white' stop-opacity='0.52'/></linearGradient><mask id='m'><rect width='100%25' height='100%25' fill='url(%23d)'/></mask><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.03' numOctaves='4' seed='17' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.5 -.2'/></filter></defs><rect width='100%25' height='100%25' filter='url(%23g)' mask='url(%23m)'/></svg>"),url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='40'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.15' numOctaves='2' seed='7' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .45 0'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>"),linear-gradient(135deg,#b89018 0%,#8a6c14 40%,#6a520e 65%,#44360a 100%);background-blend-mode:multiply,multiply,normal;background-size:100% 100%,40% 40%,100% 100%;border:2px solid #1e1600;box-shadow:inset 0 1px 0 rgba(240,200,60,.15),0 6px 28px rgba(0,0,0,.9),0 0 30px rgba(0,255,156,.12);animation:none!important}
+[data-theme="olde"] #copy-toast{font-family:'Uncial Antiqua',Georgia,serif;color:#2c1a0a;background:radial-gradient(ellipse 120% 55% at 50% 0%,#7a4a18 0%,transparent 50%),radial-gradient(ellipse 120% 55% at 50% 100%,#7a4a18 0%,transparent 50%),linear-gradient(180deg,#e8d4a8 0%,#f4e8c8 35%,#f4ead5 50%,#f0e4c0 75%,#e0cc98 100%);border:3px double #8b4513;border-radius:4px;box-shadow:0 6px 24px rgba(0,0,0,.4),inset 0 2px 8px rgba(100,60,20,.2),inset 0 -2px 8px rgba(100,60,20,.2);text-shadow:1px 1px 2px rgba(100,60,0,.25)}
+[data-theme="chalk"] #copy-toast{font-family:'Caveat',cursive;font-size:26px;font-weight:700;color:#5840a0;background:#ede8ff;border:2px solid #9070d0;border-radius:6px;filter:url(#chalk-rough);box-shadow:2px 3px 12px rgba(144,112,208,.3)}
 </style>
 </head>
 <body>
@@ -372,6 +400,7 @@ dialog#cm::backdrop{background:rgba(0,0,0,.72)}
     </filter>
   </defs>
 </svg>
+<div id="copy-toast" onclick="hideCopyToast()" role="status" aria-live="assertive"></div>
 <div class="page">
 
 <div class="theme-toggle" id="theme-toggle">
@@ -570,12 +599,13 @@ parent_region: null
     <h3 id="modal-title"></h3>
     <button class="mclose" onclick="closeModal()">&#x2715;</button>
   </div>
+  <div id="modal-context" class="mctx"></div>
   <div class="mclist" id="modal-comments"></div>
   <div class="minput">
     <textarea id="newcomment" placeholder="Add a comment&#x2026; (Ctrl+Enter to save)"></textarea>
     <div class="mbtns">
       <button class="btn bsec" onclick="closeModal()">Done</button>
-      <button class="btn bpri" onclick="addComment()">Add Comment</button>
+      <button class="btn bpri" onclick="addComment()">Add</button>
     </div>
   </div>
 </dialog>
@@ -611,6 +641,14 @@ function renderModalComments(id){
 function openModal(id, title){
   aid=id;
   document.getElementById('modal-title').textContent=title;
+  const src=document.querySelector('[data-id="'+id+'"]');
+  const ctx=document.getElementById('modal-context');
+  if(src){
+    const cl=src.cloneNode(true);
+    cl.querySelectorAll('.hint-tip,.cbadge,.xtrig,.texp,button,.trow-body').forEach(n=>n.remove());
+    cl.querySelectorAll('[data-id]').forEach(n=>n.remove());
+    ctx.innerHTML=cl.innerHTML.trim();
+  } else ctx.innerHTML='';
   renderModalComments(id);
   document.getElementById('newcomment').value='';
   document.getElementById('cm').showModal();
@@ -667,12 +705,20 @@ function bigCopy(){
       if((C[el.dataset.id]||[]).length) lines.push('');
     });
   });
-  navigator.clipboard.writeText(lines.join('\n')).then(()=>{
-    const btn=document.getElementById('copybtn');
-    const orig=btn.textContent;
-    btn.textContent='\u2713 Copied!';
-    setTimeout(()=>btn.textContent=orig,2200);
-  });
+  navigator.clipboard.writeText(lines.join('\n')).then(()=>{ showCopyToast(); });
+}
+function showCopyToast(){
+  const t=document.getElementById('copy-toast');
+  const theme=document.documentElement.getAttribute('data-theme')||'dark';
+  const labels={hacker:'[ COPY COMPLETE ]',olde:'\u2756 Copied \u2756',chalk:'\u2713 Copied!',dark:'\u2713 Copied to clipboard'};
+  t.textContent=labels[theme]||labels.dark;
+  t.classList.add('ct-show');
+  clearTimeout(window._ctTimer);
+  window._ctTimer=setTimeout(hideCopyToast,5000);
+}
+function hideCopyToast(){
+  document.getElementById('copy-toast').classList.remove('ct-show');
+  clearTimeout(window._ctTimer);
 }
 const TK = 'tps-report-theme';
 function setTheme(t){
