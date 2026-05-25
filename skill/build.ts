@@ -21,6 +21,7 @@ const FORBIDDEN = [
   "path/to/file.ext", "? points",
   "Step 1 — reason", "Step 2 — reason", "Step 3 — reason",
   "Context: what makes this hard", "Context: who decides this",
+  "1\u20133 sentences. What is this? What changes?",
 ];
 
 function die(msg: string): never {

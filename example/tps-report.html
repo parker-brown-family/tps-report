@@ -300,6 +300,17 @@ dialog#cm::backdrop{background:rgba(0,0,0,.72)}
 </div>
 
 <div class="sec xsec" data-open="true">
+  <div class="stitle xhdr" onclick="toggleXSec(this)"><span class="xtrig">&#x25BC;</span> ELI5 &#x2014; tl;dr</div>
+  <div class="xbody">
+  <div class="cal ci commentable" data-id="eli5" data-title="ELI5">
+    <span class="hint-tip">&#x1F4AC; comment</span>
+    <div class="ct">&#x1F4A1; Plain English</div>
+    The auth system currently checks permissions twice on every request — once in middleware, once in the controller — because two teams wrote them independently. We're deleting the duplicate check. When done, every request hits exactly one permission gate and the redundant code is gone.
+  </div>
+  </div>
+</div>
+
+<div class="sec xsec" data-open="true">
   <div class="stitle xhdr" onclick="toggleXSec(this)"><span class="xtrig">&#x25BC;</span> 1 &#x2014; Problem Statement</div>
   <div class="xbody">
   <div class="cal cw commentable" data-id="problem-core" data-title="Core Problem">
