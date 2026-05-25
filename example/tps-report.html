@@ -11,7 +11,7 @@
 [data-theme="chalk"]{--bg:#fdf9f2;--s1:#fff5e8;--s2:#fde8d0;--bd:#e0bfa0;--ac:#c85080;--acd:#fce8f0;--gr:#68b878;--yw:#e8b030;--rd:#d84848;--mu:#9a7090;--tx:#362030;--td:#6e4a58;--rev-bg:#fde8f0;--rev-bd:#c85080;--rev-glow:rgba(200,80,128,.3);--font-body:"Caveat",cursive;--font-mono:"Courier New","Courier",monospace}
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--tx);font:16px/1.65 var(--font-body);padding:40px 24px 100px}
-.page{max-width:940px;margin:0 auto;position:relative}
+.page{max-width:940px;margin:0 auto;position:relative;overflow-x:hidden}
 .header{border-bottom:1px solid var(--bd);padding-bottom:24px;margin-bottom:32px}
 .header h1{font-size:25px;font-weight:700;color:#fff;letter-spacing:-.3px}
 .branch{display:inline-flex;align-items:center;gap:6px;background:var(--acd);color:var(--ac);font:14px "JetBrains Mono","Fira Code",monospace;padding:3px 10px;border-radius:4px;margin-top:8px}
@@ -123,8 +123,21 @@ dialog#cm::backdrop{background:rgba(0,0,0,.72)}
 .cbadge{position:absolute;top:6px;right:8px;border-radius:10px;font-size:12px;font-weight:700;padding:1px 7px;min-width:20px;text-align:center;pointer-events:none;z-index:5}
 .has-comment > .cbadge,.has-comment .cbadge{background:var(--rev-bd);color:var(--bg);box-shadow:0 0 6px var(--rev-glow)}
 .cmtablerow .cbadge{position:static;display:inline-block;margin-left:6px;vertical-align:middle;background:var(--rev-bd);color:var(--bg)}
-.theme-toggle{position:absolute;top:32px;right:24px;display:flex;gap:6px;align-items:center;z-index:200}
+.theme-toggle{position:absolute;top:32px;right:24px;display:flex;flex-direction:column;align-items:flex-end;gap:5px;z-index:200}
+.theme-btn-row{display:flex;gap:6px;align-items:center}
 .tthm{background:var(--s2);border:1px solid var(--bd);color:var(--tx);border-radius:6px;font-size:21px;width:38px;height:38px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s,border-color .15s;line-height:1}
+.size-control{display:flex;align-items:center;gap:5px;background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:5px 9px}
+.sc-icon{font-size:16px;line-height:1;user-select:none;opacity:.85}
+.sc-a{color:var(--mu);font-weight:700;line-height:1;user-select:none}
+.sc-small{font-size:10px}
+.sc-big{font-size:18px}
+#size-slider{-webkit-appearance:none;appearance:none;width:72px;height:4px;border-radius:2px;background:var(--bd);outline:none;cursor:pointer;vertical-align:middle}
+#size-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:13px;height:13px;border-radius:50%;background:var(--ac);cursor:pointer;border:none}
+#size-slider::-moz-range-thumb{width:13px;height:13px;border-radius:50%;background:var(--ac);cursor:pointer;border:none}
+[data-theme="hacker"] .size-control{border-color:rgba(0,255,156,.3);box-shadow:0 0 6px rgba(0,255,156,.15)}
+[data-theme="hacker"] #size-slider::-webkit-slider-thumb{box-shadow:0 0 6px rgba(0,255,156,.7)}
+[data-theme="hacker"] #size-slider::-moz-range-thumb{box-shadow:0 0 6px rgba(0,255,156,.7)}
+[data-theme="chalk"] .sc-icon{font-size:19px}
 .tthm:hover{background:var(--bd);border-color:var(--ac)}
 .tthm.active{background:var(--acd);border-color:var(--ac);box-shadow:0 0 8px var(--rev-glow)}
 [data-theme="olde"] .tthm{background:#6b2d2d;border-color:#4a1a1a;color:#f4ead5}
@@ -223,12 +236,21 @@ dialog#cm::backdrop{background:rgba(0,0,0,.72)}
 <div class="page">
 
 <div class="theme-toggle" id="theme-toggle">
-  <button class="tthm active" id="btn-dark"   onclick="setTheme('dark')"   title="Dark">&#x1F319;</button>
-  <button class="tthm"        id="btn-hacker" onclick="setTheme('hacker')" title="Hacker" style="font-family:monospace;font-size:15px;font-weight:700;letter-spacing:-1px">/&gt;</button>
-  <button class="tthm"        id="btn-olde"   onclick="setTheme('olde')"   title="Olde Tyme">&#x1F4DC;</button>
-  <button class="tthm"        id="btn-chalk"  onclick="setTheme('chalk')"  title="Chalk Flower">&#x1F338;</button>
+  <div class="theme-btn-row">
+    <button class="tthm active" id="btn-dark"   onclick="setTheme('dark')"   title="Dark">&#x1F319;</button>
+    <button class="tthm"        id="btn-hacker" onclick="setTheme('hacker')" title="Hacker" style="font-family:monospace;font-size:15px;font-weight:700;letter-spacing:-1px">/&gt;</button>
+    <button class="tthm"        id="btn-olde"   onclick="setTheme('olde')"   title="Olde Tyme">&#x1F4DC;</button>
+    <button class="tthm"        id="btn-chalk"  onclick="setTheme('chalk')"  title="Chalk Flower">&#x1F338;</button>
+  </div>
+  <div class="size-control">
+    <span class="sc-icon" title="Text size">&#x1F453;</span>
+    <span class="sc-a sc-small">A</span>
+    <input type="range" id="size-slider" min="0.75" max="1.75" step="0.05" value="1" title="Text size">
+    <span class="sc-a sc-big">A</span>
+  </div>
 </div>
 
+<div id="zoom-wrap">
 <div class="header" style="position:relative">
   <h1>TPS Report &#x2014; [Project Name]</h1>
   <div class="branch">&#x2387; [branch-name]</div>
@@ -433,7 +455,8 @@ parent_region: null
   </div>
 </div>
 
-</div>
+</div><!-- /zoom-wrap -->
+</div><!-- /page -->
 
 <div class="copybar">
   <p>Click any item to leave a comment. Comments persist in your browser and are included in the copy.</p>
@@ -566,6 +589,22 @@ function hideCopyToast(){
   document.getElementById('copy-toast').classList.remove('ct-show');
   clearTimeout(window._ctTimer);
 }
+const SZ_KEY = 'tps-zoom';
+function applyZoom(v){
+  document.getElementById('zoom-wrap').style.zoom = v;
+  document.getElementById('cm').style.zoom = v;
+  document.getElementById('copy-toast').style.zoom = v;
+}
+(function initZoom(){
+  const v = parseFloat(localStorage.getItem(SZ_KEY)||'1');
+  const sl = document.getElementById('size-slider');
+  if(sl){ sl.value = v; applyZoom(v); }
+})();
+document.getElementById('size-slider').addEventListener('input', e=>{
+  const v = parseFloat(e.target.value);
+  applyZoom(v);
+  localStorage.setItem(SZ_KEY, v);
+});
 const TK = 'tps-report-theme';
 function setTheme(t){
   document.documentElement.setAttribute('data-theme', t);
