@@ -1,0 +1,9 @@
+# generated report artifacts — not source
+content.json
+body.html
+report.html
+*.report.html
+
+# node / bun
+node_modules/
+.bun/
