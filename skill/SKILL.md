@@ -25,16 +25,18 @@ Ask all of the following in a single message. Do not ask one at a time.
 
 1. **Project name** — what goes in the H1 title? (e.g. "Auth Refactor")
 2. **Branch name** — the git branch this report is for
-3. **Status pills** — up to 3 short labels for the header pills (e.g. "Active", "2026-05-22", "Chris")
+3. **Status pills** — exactly 3 short labels for the header pills (status, date, owner). Example: "Active" · "2026-05-22" · "Chris"
 4. **Problem statement** — one paragraph: what is broken or missing?
 5. **Proposed design** — one paragraph: what is the solution approach?
-6. **Code snippet** (optional) — a YAML or code block to embed in the design section
+6. **Code snippet** (optional) — a YAML or code block to embed in the design section. If none, say "skip".
 7. **Tradeoffs** — what did you NOT do, and why?
 8. **Downstream risks** — list the highest-risk files
-9. **Tickets** — list of tickets: ID + title + priority (high / medium / low)
-10. **Open questions** — 1–3 unresolved questions
+9. **Tickets** — list of tickets: ID + title + priority (high / medium / low). Provide at least one.
+10. **Open questions** — 1–3 unresolved questions. Provide at least one.
 
-If the operator says "skip" or leaves something blank, use the placeholder text from the **HTML Template** section below.
+**If an answer is missing or "skip":** do NOT leave the template default in place. Either (a) re-prompt the operator for that single field, or (b) write a concrete, context-appropriate sentence yourself based on the rest of the interview. The literal template defaults (`Replace with…`, `[Project Name]`, `Step 1 — reason`, etc.) MUST NOT appear in the final HTML.
+
+If the operator gives only a topic (e.g. "make a TPS report for the auth refactor") and skips the interview, infer every field from context and proceed — but still fill every placeholder with concrete content. Never ship the template defaults.
 
 ---
 
@@ -42,21 +44,89 @@ If the operator says "skip" or leaves something blank, use the placeholder text 
 
 Use the **HTML Template** section below as the structural and CSS template.
 
-**Replace placeholders:**
-- `[Project Name]` → answer 1
-- `[branch-name]` → answer 2
-- Status pills → answer 3
-- Problem Statement section → answer 4
-- Proposed Design section → answers 5, 6, 7
-- Considerations section → answer 8
-- Tickets section → answer 9
-- Open Questions section → answer 10
+### 2a. Placeholder map (bracketed tokens — MUST be replaced)
 
-**Do NOT modify:**
+| Token in template | Source |
+|---|---|
+| `[Project Name]` (in `<h1>`) | answer 1 |
+| `[branch-name]` (in `.branch`) | answer 2 |
+| `Status: Active` (first pill) | answer 3, label 1 |
+| `[Date]` (second pill) | answer 3, label 2 |
+| `[Owner]` (third pill) | answer 3, label 3 |
+| `[Title of the epic]` (EPIC ticket) | answer 9, the epic line |
+
+### 2b. Instructional defaults (sentence-level placeholders — MUST be rewritten)
+
+Every one of these literal strings in the template is a fill-in prompt, not content. Replace each with concrete content from the interview. If the interview did not cover it, write a one-sentence concrete answer using context — never ship the prompt itself.
+
+- `Replace with your tech stack.` → real stack (e.g. "Bun 1.1 · TypeScript 5.5 · SQLite")
+- `One-sentence scope. What does this change affect?` → one concrete sentence
+- `Replace with your assessment.` (after the Medium badge) → concrete sentence
+- `Describe the current state and why it is insufficient. Name files, functions, or user-visible symptoms.` → answer 4
+- `Who is affected? What breaks downstream?` → concrete sentence (derive from answer 4 or 8)
+- `List adjacent problems this report does NOT address.` → concrete sentence
+- `One paragraph describing the solution strategy.` → answer 5
+- `# Example code snippet (replace with your own)` + the two YAML lines → answer 6 (or remove the entire `<pre>` block if answer 6 was "skip")
+- `What did you not do, and why?` → answer 7
+- `Highest-risk files that touch this change.` → answer 8
+- `Backward-compatibility concerns.` → concrete sentence
+- `Unit tests? Integration tests? Manual smoke test?` → concrete sentence
+- `Replace with ticket description.` → real description for T-001
+- `Replace with acceptance criteria.` → real criteria for T-001
+- `path/to/file.ext` (in `.tbfiles`) → real path(s)
+- `? points` (Estimate field) → real estimate (e.g. "3 points") or remove the field
+- `Replace with ticket title` (T-002, T-003) → real titles, or remove unused ticket rows entirely
+- `Step 1 — reason`, `Step 2 — reason`, `Step 3 — reason` → real execution steps
+- `Replace with your first open question.` / `Replace with your second open question.` → answer 10
+- `Context: what makes this hard to decide?` / `Context: who decides this, and by when?` → real context for each question
+
+### 2c. Structural rules
+
+- Add or remove ticket rows as needed to match answer 9. The template's 3 ticket rows are a starting point, not a fixed count.
+- Add or remove open-question blocks as needed to match answer 10. Renumber `Q1`, `Q2`, `Q3`… in order.
+- If answer 6 is "skip", delete the entire `<pre>…</pre>` code-snippet block — do not leave the example YAML.
+- `data-id` values must stay unique within the document. If you add ticket rows, use `ticket-4`, `ticket-5`, … `q-3`, `q-4`, etc.
+
+### 2d. Do NOT modify
+
 - Any CSS (all four themes, CRT effects, Pip-Boy copy button, chalk SVG filter)
 - The comment system JavaScript
 - The Big Copy logic
 - The theme toggle buttons
+- The textarea's `placeholder="Add a comment…"` attribute (that is a UI hint, not template fill-in)
+- The `💬 comment` hint-tip spans (decorative, not placeholders)
+
+### 2e. Zero Placeholder Policy — pre-write self-check
+
+Before writing the file, scan the assembled HTML and confirm NONE of the following literal substrings appear anywhere in the document body (CSS/JS blocks excluded):
+
+```
+[Project Name]
+[branch-name]
+[Date]
+[Owner]
+[Title of the epic]
+Status: Active                      (unless that is literally the chosen status)
+Replace with
+Describe the current state
+Who is affected? What breaks
+List adjacent problems
+One paragraph describing
+Example code snippet (replace
+What did you not do
+Highest-risk files
+Backward-compatibility concerns
+Unit tests? Integration tests?
+path/to/file.ext
+? points
+Step 1 — reason
+Step 2 — reason
+Step 3 — reason
+Context: what makes this hard
+Context: who decides this
+```
+
+If ANY of these strings is present in the output, the report is not done. Fix it before writing the file. A single leaked placeholder is a failed report.
 
 ---
 
@@ -158,9 +228,10 @@ The SVG filter element must be present in the `<body>` (before `.page`) for the 
 
 ## Step 3 — Deliver
 
-1. Write the file.
-2. Tell the operator the path.
-3. Suggest: "Open in a browser. Default theme is Hacker. Click any block to comment. Big Copy exports everything."
+1. Run the Step 2e Zero Placeholder Policy self-check against the assembled HTML. If any forbidden string is present, fix it before writing.
+2. Write the file.
+3. Tell the operator the path.
+4. Suggest: "Open in a browser. Default theme is Hacker. Click any block to comment. Big Copy exports everything."
 
 ---
 
@@ -171,12 +242,13 @@ The SVG filter element must be present in the `<body>` (before `.page`) for the 
 - The localStorage key must be unique per report to prevent comment bleed.
 - Comments are browser-local. Remind the operator if they ask about sharing with others.
 - Expandable sections: Big Copy always captures collapsed content. Do not rely on visual state.
+- Zero Placeholder Policy (Step 2e) is mandatory. A report that ships with `[Project Name]`, `Replace with…`, `Step 1 — reason`, or any other template default is a failed report. Re-prompt the operator or write a concrete sentence — never leave the prompt itself.
 
 ---
 
 ## HTML Template
 
-Copy this file verbatim, then replace placeholders as described in Step 2.
+Copy this file verbatim into your working buffer, then apply the Step 2a / 2b / 2c replacements before writing the output file. The template's bracketed tokens and `Replace with…` sentences are fill-in prompts, not content — none of them may appear in the final HTML (see Step 2e).
 
 ```html
 <!DOCTYPE html>
