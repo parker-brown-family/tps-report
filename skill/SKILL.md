@@ -26,13 +26,14 @@ Ask all of the following in a single message. Do not ask one at a time.
 1. **Project name** — what goes in the H1 title? (e.g. "Auth Refactor")
 2. **Branch name** — the git branch this report is for
 3. **Status pills** — exactly 3 short labels for the header pills (status, date, owner). Example: "Active" · "2026-05-22" · "Chris"
-4. **Problem statement** — one paragraph: what is broken or missing?
-5. **Proposed design** — one paragraph: what is the solution approach?
-6. **Code snippet** (optional) — a YAML or code block to embed in the design section. If none, say "skip".
-7. **Tradeoffs** — what did you NOT do, and why?
-8. **Downstream risks** — list the highest-risk files
-9. **Tickets** — list of tickets: ID + title + priority (high / medium / low). Provide at least one.
-10. **Open questions** — 1–3 unresolved questions. Provide at least one.
+4. **ELI5** — 1–3 plain-English sentences for the absolute TL;DR reader: what is this, what changes, what does done look like? No jargon. If not provided, synthesize from answers 5 and 6.
+5. **Problem statement** — one paragraph: what is broken or missing?
+6. **Proposed design** — one paragraph: what is the solution approach?
+7. **Code snippet** (optional) — a YAML or code block to embed in the design section. If none, say "skip".
+8. **Tradeoffs** — what did you NOT do, and why?
+9. **Downstream risks** — list the highest-risk files
+10. **Tickets** — list of tickets: ID + title + priority (high / medium / low). Provide at least one.
+11. **Open questions** — 1–3 unresolved questions. Provide at least one.
 
 **If an answer is missing or "skip":** do NOT leave the template default in place. Either (a) re-prompt the operator for that single field, or (b) write a concrete, context-appropriate sentence yourself based on the rest of the interview. The literal template defaults (`Replace with…`, `[Project Name]`, `Step 1 — reason`, etc.) MUST NOT appear in the final HTML.
 
@@ -80,6 +81,30 @@ Section structure reference:
 
 See **Expandable sections**, **Expandable rows**, and **Chalk Flower theme** below for copy-paste component patterns.
 
+**Required section order in `body.html`:**
+1. Project Summary (sgrid cards)
+2. **ELI5 — tl;dr** ← always second, right after summary
+3. 1 — Problem Statement
+4. 2 — Proposed Design
+5. 3 — Considerations
+6. 4 — Tickets
+7. Run Timeline (ordered list)
+8. Open Questions
+
+**ELI5 section template:**
+```html
+<div class="sec xsec" data-open="true">
+  <div class="stitle xhdr" onclick="toggleXSec(this)"><span class="xtrig">&#x25BC;</span> ELI5 &#x2014; tl;dr</div>
+  <div class="xbody">
+  <div class="cal ci commentable" data-id="eli5" data-title="ELI5">
+    <span class="hint-tip">&#x1F4AC; comment</span>
+    <div class="ct">&#x1F4A1; Plain English</div>
+    1–3 sentences. What is this? What changes? What does done look like? No jargon.
+  </div>
+  </div>
+</div>
+```
+
 **Body content rules (Zero Placeholder Policy)**
 
 None of these may appear anywhere in `body.html` — the build script will reject the output if they do:
@@ -91,6 +116,7 @@ What did you not do  |  Highest-risk files  |  Backward-compatibility concerns
 Unit tests? Integration tests?  |  path/to/file.ext  |  ? points
 Step 1 — reason  |  Step 2 — reason  |  Step 3 — reason
 Context: what makes this hard  |  Context: who decides this
+1–3 sentences. What is this? What changes?
 ```
 
 If an interview answer is missing, write a concrete one-sentence default — never leave a prompt string.
@@ -526,6 +552,17 @@ dialog#cm::backdrop{background:rgba(0,0,0,.72)}
       <div class="lbl">Risk Level</div>
       <div><span class="bdg bmd">Medium</span> &#x2014; Replace with your assessment.</div>
     </div>
+  </div>
+  </div>
+</div>
+
+<div class="sec xsec" data-open="true">
+  <div class="stitle xhdr" onclick="toggleXSec(this)"><span class="xtrig">&#x25BC;</span> ELI5 &#x2014; tl;dr</div>
+  <div class="xbody">
+  <div class="cal ci commentable" data-id="eli5" data-title="ELI5">
+    <span class="hint-tip">&#x1F4AC; comment</span>
+    <div class="ct">&#x1F4A1; Plain English</div>
+    1–3 sentences. What is this? What changes? What does done look like? No jargon.
   </div>
   </div>
 </div>
