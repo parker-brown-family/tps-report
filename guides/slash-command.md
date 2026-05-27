@@ -16,12 +16,25 @@ Every platform below is just wiring that file into the right slot.
 
 ---
 
-## Augment (native — already works)
+## Augment
 
-Augment reads `skill/SKILL.md` automatically from your workspace.  
-Type `/tps-report` in any Augment chat and it will trigger the interview.
+Augment reads `skill/SKILL.md` automatically from your workspace.
+Type `/tps-report` in any Augment chat to trigger the interview.
 
-Nothing to configure.
+The `tps-report` MCP server is also registered with Augment (`augment.mcpServers` in VS Code settings). When the MCP server is active, Augment can call the build tools directly — no Bun shell command needed. MCP tools take precedence over the builder path when available.
+
+If Augment shows `/tps-report` as both a command and a skill, choose either one. They should be treated as the same request: execute the TPS workflow and produce the final `.html` report.
+
+For source-driven reports, use a prompt with the target path spelled out:
+
+```text
+/tps-report
+Read and follow the TPS skill. Use SPEC.md as source material.
+Write the report beside SPEC.md as project-name-tps.html.
+Prefer MCP tools if available; otherwise use the builder path.
+```
+
+For the agent execution contract (MCP tool workflow + builder fallback), see `guides/agent-workflow.md`.
 
 ---
 

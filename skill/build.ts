@@ -29,6 +29,34 @@ function die(msg: string): never {
   process.exit(1);
 }
 
+function assertReportInvariants(body: string): void {
+  const problems: string[] = [];
+  const sectionOpeners = body.match(/<div\s+class="[^"]*\bsec\b[^"]*"[^>]*>/g) ?? [];
+
+  if (!body.includes("ELI5")) {
+    problems.push('missing "ELI5"');
+  }
+
+  if (!sectionOpeners.length) {
+    problems.push('missing collapsible sections with class "sec xsec"');
+  }
+
+  for (const opener of sectionOpeners) {
+    if (!/\bxsec\b/.test(opener)) {
+      problems.push(`section is missing xsec class: ${opener}`);
+    }
+    if (!/data-open="false"/.test(opener)) {
+      problems.push(`section must default collapsed with data-open="false": ${opener}`);
+    }
+  }
+
+  if (problems.length) {
+    console.error("❌ TPS report invariant check failed:");
+    problems.forEach(p => console.error("   •", p));
+    die("Report NOT written.");
+  }
+}
+
 const [,, metaFile, bodyFile, outFile = "report.html"] = process.argv;
 if (!metaFile || !bodyFile) {
   die("Usage: bun skill/build.ts content.json body.html [output.html]");
@@ -47,6 +75,8 @@ if (!Array.isArray(meta.pills) || meta.pills.length !== 3) die("content.json 'pi
 
 const body = readFileSync(bodyFile, "utf8");
 const key = meta.key ?? meta.title.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+
+assertReportInvariants(body);
 
 let html = readFileSync(TEMPLATE, "utf8");
 html = html

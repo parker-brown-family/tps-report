@@ -10,6 +10,23 @@ license: MIT
 
 ---
 
+## Goal outcome and behavioral contract
+
+The goal is always a single deliverable document: a finished `.html` TPS report written to the operator's requested location.
+
+When `/tps-report` appears as both a command and a skill, treat both as the same execution request. Do not paste "read and follow this skill" into another document. Do not append handoff instructions to a spec unless the operator explicitly asks for that. Execute the workflow and produce the HTML file.
+
+If the operator provides a spec, issue, PR, README, ticket list, or target project path, read that source material first and infer the report fields from it. Ask interview questions only for information that cannot be inferred safely. A request like "make a TPS report for this spec" means: use the spec as the source and ship the report.
+
+External target directories are normal. If the report belongs beside a spec in another project, place `content.json`, `body.html`, and the final `.html` in that target folder unless the operator says otherwise. If your editor tool cannot write outside the current workspace, use the shell path carefully or stop and report the exact permission blocker. Do not silently fall back to `/tmp` for final artifacts.
+
+Stop conditions:
+- If the builder fails, fix the specific failure and re-run once.
+- If a command hangs, stop the process or report that it is still running before starting another.
+- If interrupted, report what exists, what does not exist, and the exact next command. Never answer only "OK."
+
+---
+
 ## When to use this skill
 
 Run when the operator says:
@@ -19,9 +36,9 @@ Run when the operator says:
 
 ---
 
-## Step 1 — Interview (gather inputs)
+## Step 1 — Gather inputs
 
-Ask all of the following in a single message. Do not ask one at a time.
+Read supplied source material first. If enough context exists, infer the fields and proceed. If critical information is missing, ask all unresolved questions in a single message. Do not ask one at a time.
 
 1. **Project name** — what goes in the H1 title? (e.g. "Auth Refactor")
 2. **Branch name** — the git branch this report is for
@@ -43,13 +60,37 @@ If the operator gives only a topic (e.g. "make a TPS report for the auth refacto
 
 ## Step 2 — Generate the HTML
 
-> **Two paths.** Use the **Builder path** if you have shell access (Augment, Claude Code, Cursor, MCP). Use the **Inline path** only if you cannot run commands (Custom GPT, raw system-prompt agents). Builder is 85% cheaper — always prefer it.
+> **Three paths.** Use **MCP tools** if the `tps-report` server is registered with your client (Claude Code, Codex, Augment). Use the **Builder** if you have shell access but no MCP. Use the **Inline path** only if you cannot run commands (Custom GPT, raw system-prompt agents). MCP and Builder are 85% cheaper than inline — always prefer them.
 
 ---
 
-### ⚡ Path A — Builder (preferred, cheapest, fastest)
+### 🛠 Path A — MCP tools (preferred when available)
+
+If the `tps-report` MCP server is registered, call the tools directly — no file writes, no shell:
+
+1. `get_tps_requirements` — fetch hard invariants, forbidden strings, schema presets, and ticket schema.
+2. `suggest_tps_schema(source_summary)` — get a recommended section preset from the source material.
+3. `validate_tps_body(body_html, schema_preset)` — check the body HTML before building.
+4. `build_tps_report(content, body_html, output_path)` — assemble and write the final `.html`.
+
+The MCP tools enforce all hard invariants and the Zero-Placeholder Policy. Sidecars (`tps-content.json`, `tps-body.html`) are written automatically alongside the output for later editing.
+
+Registration: `guides/mcp.md`.
+
+---
+
+### ⚡ Path B — Builder (preferred when no MCP, has shell)
 
 **You write two small files. The build script does the rest.**
+
+Builder workflow:
+1. Choose the output directory. Prefer the operator's requested target folder, especially when the source spec lives in another project.
+2. Write `content.json` and `body.html` as small, inspectable files in that folder.
+3. Run the builder from this skill repo or by absolute path.
+4. Verify the output file exists, is non-empty, and the builder reported no Zero-Placeholder Policy violations.
+5. Tell the operator the final `.html` path.
+
+Do not create a giant inline shell command containing the full report. Do not generate the finished HTML by hand when `bun skill/build.ts` is available. Do not use `/tmp` unless the target folder is not writable and the operator accepts that fallback.
 
 **File 1 — `content.json` (~8 lines)**
 ```json
@@ -71,7 +112,7 @@ Write only the `.sec` section `<div>` blocks — no `<html>`, `<head>`, `<style>
 
 Section structure reference:
 ```html
-<div class="sec xsec" data-open="true">
+<div class="sec xsec" data-open="false">
   <div class="stitle xhdr" onclick="toggleXSec(this)"><span class="xtrig">&#x25BC;</span> Section Title</div>
   <div class="xbody">
     <!-- your content here — cards, tables, lists, pre blocks, etc. -->
@@ -79,21 +120,18 @@ Section structure reference:
 </div>
 ```
 
-See **Expandable sections**, **Expandable rows**, and **Chalk Flower theme** below for copy-paste component patterns.
+See **Suggested report schemas**, **Expandable sections**, **Expandable rows**, and **Chalk Flower theme** below for copy-paste component patterns.
 
-**Required section order in `body.html`:**
-1. Project Summary (sgrid cards)
-2. **ELI5 — tl;dr** ← always second, right after summary
-3. 1 — Problem Statement
-4. 2 — Proposed Design
-5. 3 — Considerations
-6. 4 — Tickets
-7. Run Timeline (ordered list)
-8. Open Questions
+**Hard body invariants:**
+- Include an **ELI5 — tl;dr** section near the top. This is the one non-negotiable content section.
+- Every top-level report section must use `.sec.xsec` and default to `data-open="false"` so the reader opens the report intentionally.
+- Do not ship template placeholders or instructional prompt text.
+
+Use the suggested schemas below as starting points. Rename sections, merge sections, add surprising sections, or go full chaos mode when the source material calls for it. The schema is a launchpad, not a cage.
 
 **ELI5 section template:**
 ```html
-<div class="sec xsec" data-open="true">
+<div class="sec xsec" data-open="false">
   <div class="stitle xhdr" onclick="toggleXSec(this)"><span class="xtrig">&#x25BC;</span> ELI5 &#x2014; tl;dr</div>
   <div class="xbody">
   <div class="cal ci commentable" data-id="eli5" data-title="ELI5">
@@ -126,11 +164,11 @@ If an interview answer is missing, write a concrete one-sentence default — nev
 bun skill/build.ts content.json body.html report.html
 ```
 
-The script reads `skill/template.html`, fills the 7 tokens, enforces the ZPP check, and writes the final file. If any forbidden string is present it exits non-zero and prints which ones. Fix and re-run.
+The script reads `skill/template.html`, fills the 7 tokens, enforces hard body invariants and the ZPP check, and writes the final file. If ELI5 is missing, a section is not collapsible/default-collapsed, or any forbidden string is present, it exits non-zero and prints what to fix. Fix and re-run.
 
 ---
 
-### 📄 Path B — Inline (prompt-only agents, no shell access)
+### 📄 Path C — Inline (prompt-only agents, no shell access)
 
 Use the **HTML Template** section at the bottom of this file. Copy it verbatim, then:
 
@@ -153,7 +191,7 @@ Apply the same Zero Placeholder Policy self-check before writing. A single leake
 Any `.sec` can be made collapsible by adding the `xsec` class, a `data-open` attribute, and wrapping the body content in `.xbody`:
 
 ```html
-<div class="sec xsec" data-open="true">
+<div class="sec xsec" data-open="false">
   <div class="stitle xhdr" onclick="toggleXSec(this)">
     <span class="xtrig">&#x25BC;</span> Section Title
   </div>
@@ -163,10 +201,102 @@ Any `.sec` can be made collapsible by adding the `xsec` class, a `data-open` att
 </div>
 ```
 
-- `data-open="true"` — starts expanded (default)
-- `data-open="false"` — starts collapsed
+- `data-open="false"` — starts collapsed (TPS default)
+- `data-open="true"` — starts expanded; use only when the operator explicitly asks for an open-first report
 - The `&#x25BC;` triangle rotates 90° when collapsed (CSS handles it)
 - Big Copy captures content regardless of collapsed state
+
+---
+
+## Suggested report schemas
+
+These are recommended structures, not hard requirements. Keep ELI5 near the top, keep top-level sections collapsible, and then choose the shape that best reveals the work.
+
+### Feature build
+
+1. ELI5 — tl;dr
+2. User-visible outcome
+3. Current behavior / problem
+4. Proposed design
+5. UX and edge states
+6. Implementation tickets
+7. Testing and acceptance
+8. Gotchas / rollback
+9. Open questions
+
+### Research digest or progress report
+
+1. ELI5 — tl;dr
+2. What changed since last update
+3. Key findings
+4. Evidence and source notes
+5. Decisions made
+6. Risks and unknowns
+7. Next probes
+8. Open questions
+
+### Database migration
+
+1. ELI5 — tl;dr
+2. Schema change summary
+3. Data/backfill plan
+4. Compatibility and rollout
+5. Migration tickets
+6. Verification queries
+7. Rollback / recovery
+8. Gotchas
+9. Open questions
+
+### Styling or UI polish
+
+1. ELI5 — tl;dr
+2. Visual intent
+3. Before / after behavior
+4. Component touchpoints
+5. Accessibility and responsive checks
+6. Implementation tickets
+7. Review checklist
+8. Open questions
+
+### Incident, bug, or failure analysis
+
+1. ELI5 — tl;dr
+2. What happened
+3. Impact
+4. Root cause theory
+5. Evidence
+6. Fix plan
+7. Prevention tickets
+8. Gotchas
+9. Open questions
+
+---
+
+## Ticket schema
+
+Tickets should be semi-rigid so they are actionable without becoming sterile. Use expandable ticket rows and include Gherkin acceptance criteria whenever possible.
+
+Recommended fields:
+- ID
+- title
+- priority
+- intent
+- files or systems touched
+- Gherkin acceptance criteria
+- gotchas
+- verification
+- dependencies / blockers
+
+Gherkin shape:
+
+```text
+Given [starting state]
+When [user or system action]
+Then [observable outcome]
+And [important side effect or guardrail]
+```
+
+Every ticket should include at least one gotcha. Gotchas are where the report gets practical: hidden coupling, path risk, migration timing, confusing UI states, permissions, stale context, or anything likely to bite the implementer.
 
 ---
 
@@ -244,9 +374,11 @@ The SVG filter element must be present in the `<body>` (before `.page`) for the 
 
 ## Step 3 — Deliver
 
-**Path A (builder):** `bun skill/build.ts content.json body.html <output>.html` — the script enforces ZPP and writes the file. Done in one command.
+**Path A (MCP tools):** `build_tps_report(...)` — tools enforce ZPP, write the file, and emit sidecars. Done in one call.
 
-**Path B (inline):** Confirm no forbidden strings remain in the assembled HTML, then write the file.
+**Path B (builder):** `bun skill/build.ts content.json body.html <output>.html` — the script enforces ZPP and writes the file. Done in one command.
+
+**Path C (inline):** Confirm no forbidden strings remain in the assembled HTML, then write the file.
 
 Tell the operator the path. Suggest: "Open in a browser. Default theme is Hacker. Click any block to comment. Big Copy exports everything."
 
@@ -263,9 +395,9 @@ Tell the operator the path. Suggest: "Open in a browser. Default theme is Hacker
 
 ---
 
-## HTML Template (Path B — inline fallback only)
+## HTML Template (Path C — inline fallback only)
 
-> **Shell-capable agents should use Path A** (`bun skill/build.ts`). The file `skill/template.html` already has the 7 `{{TOKEN}}` placeholders pre-injected; the builder reads it directly — you never need to copy this block.
+> **MCP-enabled agents should use Path A** (`build_tps_report`). **Shell-capable agents should use Path B** (`bun skill/build.ts`). The file `skill/template.html` already has the 7 `{{TOKEN}}` placeholders pre-injected; the builder reads it directly — you never need to copy this block.
 >
 > This section exists only for agents that cannot run commands (Custom GPT, raw system-prompt contexts). If that is you: copy the block below verbatim, replace the 7 `{{TOKEN}}` values and all `Replace with…` / instructional-default strings, then apply the Zero Placeholder Policy self-check before writing.
 
@@ -533,7 +665,7 @@ dialog#cm::backdrop{background:rgba(0,0,0,.72)}
   </div>
 </div>
 
-<div class="sec xsec" data-open="true">
+<div class="sec xsec" data-open="false">
   <div class="stitle xhdr" onclick="toggleXSec(this)"><span class="xtrig">&#x25BC;</span> Project Summary</div>
   <div class="xbody">
   <div class="sgrid">
@@ -556,7 +688,7 @@ dialog#cm::backdrop{background:rgba(0,0,0,.72)}
   </div>
 </div>
 
-<div class="sec xsec" data-open="true">
+<div class="sec xsec" data-open="false">
   <div class="stitle xhdr" onclick="toggleXSec(this)"><span class="xtrig">&#x25BC;</span> ELI5 &#x2014; tl;dr</div>
   <div class="xbody">
   <div class="cal ci commentable" data-id="eli5" data-title="ELI5">
@@ -567,7 +699,7 @@ dialog#cm::backdrop{background:rgba(0,0,0,.72)}
   </div>
 </div>
 
-<div class="sec xsec" data-open="true">
+<div class="sec xsec" data-open="false">
   <div class="stitle xhdr" onclick="toggleXSec(this)"><span class="xtrig">&#x25BC;</span> 1 &#x2014; Problem Statement</div>
   <div class="xbody">
   <div class="cal cw commentable" data-id="problem-core" data-title="Core Problem">
@@ -588,7 +720,7 @@ dialog#cm::backdrop{background:rgba(0,0,0,.72)}
   </div>
 </div>
 
-<div class="sec xsec" data-open="true">
+<div class="sec xsec" data-open="false">
   <div class="stitle xhdr" onclick="toggleXSec(this)"><span class="xtrig">&#x25BC;</span> 2 &#x2014; Proposed Design</div>
   <div class="xbody">
   <div class="cal ci commentable" data-id="design-approach" data-title="Approach">
@@ -609,7 +741,7 @@ parent_region: null
   </div>
 </div>
 
-<div class="sec xsec" data-open="true">
+<div class="sec xsec" data-open="false">
   <div class="stitle xhdr" onclick="toggleXSec(this)"><span class="xtrig">&#x25BC;</span> 3 &#x2014; Considerations</div>
   <div class="xbody">
   <div class="cal cw commentable" data-id="cons-downstream" data-title="Downstream risk">
@@ -630,7 +762,7 @@ parent_region: null
   </div>
 </div>
 
-<div class="sec xsec" data-open="true">
+<div class="sec xsec" data-open="false">
   <div class="stitle xhdr" onclick="toggleXSec(this)"><span class="xtrig">&#x25BC;</span> 4 &#x2014; Tickets</div>
   <div class="xbody">
   <div class="tbox">
@@ -693,7 +825,7 @@ parent_region: null
   </div>
 </div>
 
-<div class="sec xsec" data-open="true">
+<div class="sec xsec" data-open="false">
   <div class="stitle xhdr" onclick="toggleXSec(this)"><span class="xtrig">&#x25BC;</span> Open Questions</div>
   <div class="xbody">
   <div class="qbox commentable" data-id="q-1" data-title="Q1">

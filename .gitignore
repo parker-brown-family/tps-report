@@ -7,3 +7,8 @@ report.html
 # node / bun
 node_modules/
 .bun/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
