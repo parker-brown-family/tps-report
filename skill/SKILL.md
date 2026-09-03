@@ -468,7 +468,7 @@ code{font-family:"JetBrains Mono","Fira Code",monospace;font-size:14px;backgroun
 .cmtablerow:hover td{background:#1a2040}
 .hint-tip{display:none;position:absolute;bottom:-24px;right:0;font-size:12px;color:var(--ac);background:var(--acd);padding:2px 8px;border-radius:4px;white-space:nowrap;z-index:10;pointer-events:none}
 .commentable:hover .hint-tip,.cmtablerow:hover .hint-tip{display:block}
-dialog#cm{background:var(--s1);border:1px solid var(--bd);border-radius:10px;color:var(--tx);padding:0;max-width:540px;width:90vw;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+dialog#cm{margin:auto;background:var(--s1);border:1px solid var(--bd);border-radius:10px;color:var(--tx);padding:0;max-width:540px;width:90vw;box-shadow:0 20px 60px rgba(0,0,0,.6)}
 dialog#cm::backdrop{background:rgba(0,0,0,.72)}
 .mh{display:flex;align-items:flex-start;justify-content:space-between;padding:20px 24px 14px;border-bottom:1px solid var(--bd)}
 .mh h3{font-size:16px;font-weight:700;color:#fff;flex:1;margin-right:12px;line-height:1.4}
